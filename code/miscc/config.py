@@ -16,11 +16,13 @@ __C.CONFIG_NAME = ''
 __C.DATA_DIR = ''
 __C.GPU_ID = 0
 __C.CUDA = True
+__C.EXT_IN = 'jpg'
+__C.EXT_OUT = 'jpg'
 __C.WORKERS = 6
 
 __C.RNN_TYPE = 'LSTM'   # 'GRU'
-__C.B_VALIDATION = False
-__C.B_FID = False
+__C.B_VALIDATION = True
+__C.B_FID = True
 
 __C.TREE = edict()
 __C.TREE.BRANCH_NUM = 3
