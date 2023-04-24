@@ -275,10 +275,12 @@ class TextDataset(data.Dataset):
 
     def load_text_data(self, data_dir, split):
         filepath = os.path.join(data_dir, 'captions.pickle')
-        train_names = self.load_filenames(data_dir, 'train')
+        # train_names = self.load_filenames(data_dir, 'train')
+        train_names = []
         test_names = self.load_filenames(data_dir, 'test')
         if not os.path.isfile(filepath):
-            train_captions = self.load_captions(data_dir, train_names)
+            # train_captions = self.load_captions(data_dir, train_names)
+            print("Enter Not!!!!!!")
             test_captions = self.load_captions(data_dir, test_names)
 
             train_captions, test_captions, ixtoword, wordtoix, n_words = \
@@ -289,20 +291,17 @@ class TextDataset(data.Dataset):
                 print('Save to: ', filepath)
         else:
             with open(filepath, 'rb') as f:
+                print("Enter!!!!!!")
+
                 x = pickle.load(f)
                 train_captions, test_captions = x[0], x[1]
                 ixtoword, wordtoix = x[2], x[3]
                 del x
                 n_words = len(ixtoword)
                 print('Load from: ', filepath)
-        if split == 'train':
-            # a list of list: each list contains
-            # the indices of words in a sentence
-            captions = train_captions
-            filenames = train_names
-        else:  # split=='test'
-            captions = test_captions
-            filenames = test_names
+        
+        captions = test_captions
+        filenames = test_names
         return filenames, captions, ixtoword, wordtoix, n_words
 
     def load_class_id(self, data_dir, total_num):
