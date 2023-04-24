@@ -136,7 +136,7 @@ if __name__ == "__main__":
     output_dir = '../output/%s_%s_%s' % \
         (cfg.DATASET_NAME, cfg.CONFIG_NAME, timestamp)
 
-    split_dir, bshuffle = 'train', True
+    split_dir, bshuffle = 'test', True
     if not cfg.TRAIN.FLAG:
         # bshuffle = False
         split_dir = 'test'
