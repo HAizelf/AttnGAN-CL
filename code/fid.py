@@ -105,7 +105,7 @@ if __name__ == "__main__":
     # -- #
     
     # print( f'Number of generated images to be used in FID calculation: {len( final_paths_g )}' )
-    print( f'Number of real images to be used in FID calculation: {len( final_paths_r )}' )
+    # print( f'Number of real images to be used in FID calculation: {len( final_paths_r )}' )
     fid_value = pytorch_fid.fid_score.calculate_fid_given_paths( paths = [ final_dir_g, final_dir_r ],
                                                                             batch_size = 50,
                                                                             device = device,
