@@ -487,6 +487,8 @@ class condGANTrainer(object):
                         break
                     if step % 100 == 0:
                        print('cnt: ', cnt)
+                    if(cnt==2940):
+                        break
                     # if step > 50:
                     #     break
 
