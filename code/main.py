@@ -168,4 +168,4 @@ if __name__ == "__main__":
         else:
             gen_example(dataset.wordtoix, algo)  # generate images for customized captions
     end_t = time.time()
-    print('Total time for training:', end_t - start_t)
+    print('Total time:', end_t - start_t)
