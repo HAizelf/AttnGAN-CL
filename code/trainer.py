@@ -508,42 +508,42 @@ class condGANTrainer(object):
                     #######################################################
                     # (2) Generate fake images
                     ######################################################
-                    noise.data.normal_(0, 1)
-                    fake_imgs, _, _, _ = netG(noise, sent_emb, words_embs, mask)
-                    for j in range(batch_size):
-                        s_tmp = '%s/single/%s' % (save_dir, keys[j])
-                        folder = s_tmp[:s_tmp.rfind('/')]
-                        if not os.path.isdir(folder):
-                            #print('Make a new folder: ', folder)
-                            mkdir_p(folder)
-                        k = -1
-                        # for k in range(len(fake_imgs)):
-                        im = fake_imgs[k][j].data.cpu().numpy()
-                        # [-1, 1] --> [0, 255]
-                        im = (im + 1.0) * 127.5
-                        im = im.astype(np.uint8)
-                        im = np.transpose(im, (1, 2, 0))
-                        im = Image.fromarray(im)
-                        fullpath = '%s_s%d_%d.png' % (s_tmp, k, ii)
-                        im.save(fullpath)
+                    # noise.data.normal_(0, 1)
+                    # fake_imgs, _, _, _ = netG(noise, sent_emb, words_embs, mask)
+                    # for j in range(batch_size):
+                    #     s_tmp = '%s/single/%s' % (save_dir, keys[j])
+                    #     folder = s_tmp[:s_tmp.rfind('/')]
+                    #     if not os.path.isdir(folder):
+                    #         #print('Make a new folder: ', folder)
+                    #         mkdir_p(folder)
+                    #     k = -1
+                    #     # for k in range(len(fake_imgs)):
+                    #     im = fake_imgs[k][j].data.cpu().numpy()
+                    #     # [-1, 1] --> [0, 255]
+                    #     im = (im + 1.0) * 127.5
+                    #     im = im.astype(np.uint8)
+                    #     im = np.transpose(im, (1, 2, 0))
+                    #     im = Image.fromarray(im)
+                    #     fullpath = '%s_s%d_%d.png' % (s_tmp, k, ii)
+                    #     im.save(fullpath)
 
-                    _, cnn_code = image_encoder(fake_imgs[-1])
+                    # _, cnn_code = image_encoder(fake_imgs[-1])
 
-                    for i in range(batch_size):
-                        mis_captions, mis_captions_len = self.dataset.get_mis_caption(class_ids[i])
-                        hidden = text_encoder.init_hidden(99)
-                        _, sent_emb_t = text_encoder(mis_captions, mis_captions_len, hidden)
-                        rnn_code = torch.cat((sent_emb[i, :].unsqueeze(0), sent_emb_t), 0)
-                        ### cnn_code = 1 * nef
-                        ### rnn_code = 100 * nef
-                        scores = torch.mm(cnn_code[i].unsqueeze(0), rnn_code.transpose(0, 1))  # 1* 100
-                        cnn_code_norm = torch.norm(cnn_code[i].unsqueeze(0), 2, dim=1, keepdim=True)
-                        rnn_code_norm = torch.norm(rnn_code, 2, dim=1, keepdim=True)
-                        norm = torch.mm(cnn_code_norm, rnn_code_norm.transpose(0, 1))
-                        scores0 = scores / norm.clamp(min=1e-8)
-                        if torch.argmax(scores0) == 0:
-                            R[R_count] = 1
-                        R_count += 1
+                    # for i in range(batch_size):
+                    #     mis_captions, mis_captions_len = self.dataset.get_mis_caption(class_ids[i])
+                    #     hidden = text_encoder.init_hidden(99)
+                    #     _, sent_emb_t = text_encoder(mis_captions, mis_captions_len, hidden)
+                    #     rnn_code = torch.cat((sent_emb[i, :].unsqueeze(0), sent_emb_t), 0)
+                    #     ### cnn_code = 1 * nef
+                    #     ### rnn_code = 100 * nef
+                    #     scores = torch.mm(cnn_code[i].unsqueeze(0), rnn_code.transpose(0, 1))  # 1* 100
+                    #     cnn_code_norm = torch.norm(cnn_code[i].unsqueeze(0), 2, dim=1, keepdim=True)
+                    #     rnn_code_norm = torch.norm(rnn_code, 2, dim=1, keepdim=True)
+                    #     norm = torch.mm(cnn_code_norm, rnn_code_norm.transpose(0, 1))
+                    #     scores0 = scores / norm.clamp(min=1e-8)
+                    #     if torch.argmax(scores0) == 0:
+                    #         R[R_count] = 1
+                    #     R_count += 1
 
                     if R_count >= 30000:
                         sum = np.zeros(10)
